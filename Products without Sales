@@ -1,0 +1,10 @@
+SELECT 
+     product.sku, product.product_name
+FROM 
+     product
+WHERE 
+     product.id NOT IN (SELECT product_id FROM invoice_item)
+GROUP BY
+      product.sku, product.product_name
+ORDER BY
+      product.sku ASC;
