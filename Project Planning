@@ -1,0 +1,24 @@
+With CTE1 AS(
+      SELECT 
+        Start_Date,
+      ROW_NUMBER() OVER(ORDER BY Start_Date)as Start_Date_rank
+      from projects
+      where Start_Date NOT IN (SELECT End_Date
+                              from projects)
+),
+
+CTE2 AS(
+       SELECT
+         End_Date,
+      ROW_NUMBER() OVER(ORDER BY End_Date)as End_Date_rank
+      from projects
+      where End_Date NOT IN (SELECT Start_Date
+                              from projects)
+)
+
+SELECT
+ Start_Date,
+ End_Date
+FROM CTE1,CTE2
+WHERE Start_Date_rank = End_Date_rank
+ORDER BY Datediff(End_Date,Start_Date),Start_Date;
